@@ -1,0 +1,16 @@
+// Calculate the area of a triangle
+
+base = 5.0;
+
+height = 10.0;
+
+area = base * height / 2;
+
+prints("Base of the triangle = ");
+printd(base);
+
+prints("Height of the triangle = ");
+printd(height);
+
+prints("Area of the triangle = ");
+printd(area);

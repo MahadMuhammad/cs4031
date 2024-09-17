@@ -41,6 +41,7 @@
 
 %%
 
+// Syntax Directed Translation
 root:	/* empty */				{debugBison(1);}  	
 	| prints  root				{debugBison(2);}
 	| printd  root				{debugBison(3);}

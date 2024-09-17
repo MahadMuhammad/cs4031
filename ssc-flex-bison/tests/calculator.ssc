@@ -1,0 +1,25 @@
+// Simple Calculator
+
+operand1 = 10.0;
+prints("1st Operand: ");
+printd(operand1);
+
+operand2 = 5.0;
+prints("2nd Operand: ");
+printd(operand2);
+
+addition_result = operand1 + operand2;
+prints("Addition: ");
+printd(addition_result);
+
+subtraction_result = operand1 - operand2;
+prints("Subtraction: ");
+printd(subtraction_result);
+
+multiplication_result = operand1 * operand2;
+prints("Multiplication: ");
+printd(multiplication_result);
+
+division_result = operand1 / operand2;
+prints("Division: ");
+printd(division_result);
