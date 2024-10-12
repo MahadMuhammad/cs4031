@@ -1,0 +1,10 @@
+try {
+    try {
+        printd(10 / 0);
+    } catch (DivisionByZero) {
+        prints("Caught inner division by zero exception");
+    }
+    printd(10 / 2);
+} catch (DivisionByZero) {
+    prints("Caught outer division by zero exception");
+}

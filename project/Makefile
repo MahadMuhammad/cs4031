@@ -17,6 +17,7 @@ PARSER_H = ssc.tab.h
 # Bison and Flex flags
 BISON_FLAGS = -d
 FLEX_FLAGS =
+DEBUG=-DDEBUGSSC
 
 # Default target: compile the entire project
 all: $(EXECUTABLE)
@@ -31,7 +32,7 @@ $(LEX_C): $(LEXER)
 
 # Compile the SSC compiler
 $(EXECUTABLE): $(LEX_C) $(PARSER_C)
-	$(CXX) -o $(EXECUTABLE) $(PARSER_C) $(LEX_C)
+	$(CXX) -o $(EXECUTABLE) $(PARSER_C) $(LEX_C) 
 
 # Run the SSC compiler with the sample input file
 run: $(EXECUTABLE)

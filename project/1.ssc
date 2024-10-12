@@ -1,0 +1,9 @@
+try {
+printd(10);
+a = 10;
+b = 0;
+
+}
+catch (division_by_zero) {   
+ prints("Division by zero");
+}

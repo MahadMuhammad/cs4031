@@ -1,0 +1,5 @@
+try {
+    printd(5 * 5);
+} catch (DivisionByZero) {
+    prints("Caught division by zero exception");
+}
