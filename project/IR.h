@@ -1,3 +1,4 @@
+#include <exception>
 #include <map>
 #include <setjmp.h>
 #include <stack>
@@ -6,7 +7,8 @@
 #include <string>
 using namespace std;
 
-static map<string, double> symbolTable;
+static map<string, double> doubleSymbolTable;
+static map<string, string> stringSymbolTable;
 static stack<string> exceptionStack;
 bool exceptionThrown = false;
 
@@ -30,9 +32,11 @@ double performBinaryOperation(double lhs, double rhs, int op) {
   case '/':
     if (rhs == 0) {
       exceptionThrown = true;
-      string msg = "Division by zero: Attempted to divide " + to_string(lhs) +
+/*       string msg = "Division by zero: Attempted to divide " + to_string(lhs) +
                    " by " + to_string(rhs);
-      throw CustomException(msg);
+      exceptionStack.push(msg);
+      exceptionThrown = false;
+      throw CustomException(msg); */
     }
     return lhs / rhs;
   default:
@@ -46,40 +50,35 @@ void print(const char *format, double value) { printf(format, value); }
 
 void setValueInSymbolTable(const char *id, double value) {
   string name(id);
-  symbolTable[name] = value;
+  doubleSymbolTable[name] = value;
+}
+
+void setValueInStringSymbolTable(const char *id, const char *value) {
+  string name(id);
+  stringSymbolTable[name] = string(value);
 }
 
 double getValueFromSymbolTable(const char *id) {
   string name(id);
-  if (symbolTable.find(name) != symbolTable.end()) {
-    return symbolTable[name];
+  if (doubleSymbolTable.find(name) != doubleSymbolTable.end()) {
+    return doubleSymbolTable[name];
   }
   return 0;
 }
 
+string getValueFromStringSymbolTable(const char *id) {
+  string name(id);
+  if (stringSymbolTable.find(name) != stringSymbolTable.end()) {
+    return stringSymbolTable[name];
+  }
+  return "";
+}
+
+bool isExceptionThrown() { return exceptionThrown; }
+void setExceptionThrown(bool value) { exceptionThrown = value; }
 void throwException(const char *exceptionType) {
   string exType(exceptionType);
   exceptionStack.push(exType);
+  exceptionThrown = true;
   throw CustomException(exType);
-}
-
-void tryBlock(void (*tryBlock)()) {
-  if (tryBlock == nullptr) {
-    return;
-  }
-  printf("%s",*tryBlock);
-}
-
-void CatchBlock(void (*catchBlock)(), const char *exception) {
-  if(!exceptionThrown){
-    return;
-  }
-  else if (catchBlock == nullptr) {
-    return;
-  }
-  else if (exceptionThrown) {
-    catchBlock();
-    throwException(exception);
-    exceptionThrown = false;
-  }
 }

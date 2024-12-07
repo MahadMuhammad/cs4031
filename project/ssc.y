@@ -19,7 +19,7 @@
     char *identifier;
     double double_literal;
     char *string_literal;
-    void (*block)();
+    int block;
 }
 
 %token tok_printd
@@ -27,12 +27,13 @@
 %token tok_try
 %token tok_catch
 %token tok_throw
+%token tok_printe
 %token <identifier> tok_identifier
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
 
 %type <double_literal> term expression
-%type <block> root exception_root try_root
+%type <block> root catch_root
 
 %left '+' '-' 
 %left '*' '/'
@@ -50,23 +51,22 @@ root:	/* empty */				{debugBison(1);}
     | throw  root				{debugBison(6);}
     ;
 
-
-try_root:	/* empty */				{debugBison(1);}  	
-    | prints  try_root				{debugBison(2);}
-    | printd  try_root				{debugBison(3);}
-    | assignment  try_root			{debugBison(4);}
+catch_root:    /* empty */				{debugBison(1);}  	
+    /* | prints  catch_root			{debugBison(2);}
+    | printd  catch_root			{debugBison(3);} */
+    | printe  catch_root			{debugBison(80);}
+    | assignment  catch_root		{debugBison(4);}
+    | try_catch  catch_root		{debugBison(5);}
+    | throw  catch_root			{debugBison(6);}
     ;
 
-exception_root:	/* empty */				{debugBison(1);}  	
-    | prints  exception_root				{debugBison(2);}
-    | printd  exception_root				{debugBison(3);}
-    | assignment  exception_root			{debugBison(4);}
-    ; 
-
-prints:	tok_prints '(' tok_string_literal ')' ';'   {debugBison(6); print("%s\n", $3); } 
+prints:	tok_prints '(' tok_string_literal ')' ';'   {debugBison(6); print("%s\n", $3);} 
     ;
 
 printd:	tok_printd '(' term ')' ';'		{debugBison(7); print("%lf\n", $3); }
+    ;
+
+printe:    tok_printe '(' tok_string_literal ')' ';'   {debugBison(8); if (exceptionThrown){ print("%s\n", $3); exceptionThrown = false;}} 
     ;
 
 term:	tok_identifier				{debugBison(8); $$ = getValueFromSymbolTable($1); } 
@@ -85,8 +85,28 @@ expression: term				{debugBison(11); $$= $1;}
        ;
 
 
-try_catch: tok_try '{' try_root '}' tok_catch '(' tok_identifier ')' '{' exception_root '}' 
-        {debugBison(17); tryBlock($3); if (exceptionThrown) CatchBlock($10, $7);}
+try_catch: tok_try '{' root '}' tok_catch '(' tok_identifier ')' '{' catch_root '}' 
+        {
+            debugBison(17); 
+            try {
+                $3;
+            } catch (const char* e) {
+                if (!isExceptionThrown()){
+                    setValueInStringSymbolTable($7, e);
+                    setExceptionThrown(false);
+                    $10;
+                }
+            }
+        }
+        | tok_try '{' root '}' 
+        {
+            debugBison(18); 
+            try {
+                $3;
+            } catch (const char* e) {
+                printf("Exception caught: %s\n", e);
+            }
+        }
     ;
 
 throw: tok_throw '(' tok_identifier ')' ';' 
