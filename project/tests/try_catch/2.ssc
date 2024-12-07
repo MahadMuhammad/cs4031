@@ -1,5 +1,6 @@
 try {
-    printd(10 / 2);
+    a = 10 / 2;
+    printd(a);
 } catch (DivisionByZero) {
-    prints("Caught division by zero exception");
+    printe("Caught division by zero exception");
 }

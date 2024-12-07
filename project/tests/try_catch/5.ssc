@@ -1,5 +1,5 @@
 try {
     throw(CustomException);
 } catch (CustomException) {
-    prints("Caught custom exception");
+    printe("Caught custom exception");
 }
