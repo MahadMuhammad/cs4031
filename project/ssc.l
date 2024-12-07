@@ -19,6 +19,7 @@
 
 "printd"                {debugFlex(tok_printd); return tok_printd;}
 "prints"                {debugFlex(tok_prints); return tok_prints;}
+"printe"                {debugFlex(tok_printe); return tok_printe;}
 "try"                   {debugFlex(tok_try); return tok_try;}
 "catch"                 {debugFlex(tok_catch); return tok_catch;}
 "throw"                 {debugFlex(tok_throw); return tok_throw;}
