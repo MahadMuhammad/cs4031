@@ -20,6 +20,7 @@
     double double_literal;
     char *string_literal;
     int block;
+    int ival;
 }
 
 %token tok_printd
@@ -28,12 +29,24 @@
 %token tok_catch
 %token tok_throw
 %token tok_printe
+%token tok_if
+%token tok_else
+%token tok_while
+%token tok_eq
+%token tok_neq
+%token tok_lt
+%token tok_lte
+%token tok_gt
+%token tok_gte
+%token tok_and
+%token tok_or
 %token <identifier> tok_identifier
 %token <double_literal> tok_double_literal
 %token <string_literal> tok_string_literal
 
 %type <double_literal> term expression
 %type <block> root catch_root
+%type <ival> condition 
 
 %left '+' '-' 
 %left '*' '/'
@@ -49,6 +62,8 @@ root:	/* empty */				{debugBison(1);}
     | assignment  root			{debugBison(4);}
     | try_catch  root			{debugBison(5);}
     | throw  root				{debugBison(6);}
+    | if_else  root				{debugBison(7);}
+    | while  root				{debugBison(8);}
     ;
 
 catch_root:    /* empty */				{debugBison(1);}  	
@@ -75,6 +90,42 @@ term:	tok_identifier				{debugBison(8); $$ = getValueFromSymbolTable($1); }
 
 assignment:  tok_identifier '=' expression ';'	{debugBison(10); setValueInSymbolTable($1, $3); } 
     ;
+
+condition: 
+    '(' expression ')' {debugBison(10); $$ = $2;}
+    | expression tok_gt expression {debugBison(11); $$ = ($1 > $3);}
+    | expression tok_lt expression {debugBison(12); $$ = ($1 < $3);}
+    | expression tok_gte expression {debugBison(13); $$ = ($1 >= $3);}
+    | expression tok_lte expression {debugBison(14); $$ = ($1 <= $3);}
+    | expression tok_eq expression {debugBison(15); $$ = ($1 == $3);}
+    | expression tok_neq expression {debugBison(16); $$ = ($1 != $3);}
+    ;
+if_else: tok_if expression '{' root '}' tok_else '{' root '}' 
+        {
+            debugBison(11); 
+            if ($2) {
+                printf("%s\n", $2);
+                $4;
+            } else {
+                $8;
+            }
+        }
+        | tok_if expression '{' root '}'
+        {
+            debugBison(12); 
+            if ($2) {
+                $4;
+            }
+        }
+    ;
+
+while: tok_while '(' condition ')' '{' root '}' 
+        {
+            debugBison(13); 
+            while ($3) {
+                $6;
+            }
+        }
 
 expression: term				{debugBison(11); $$= $1;}
        | expression '+' expression		{debugBison(12); $$ = performBinaryOperation ($1, $3, '+');}
