@@ -32,11 +32,10 @@ double performBinaryOperation(double lhs, double rhs, int op) {
   case '/':
     if (rhs == 0) {
       exceptionThrown = true;
-/*       string msg = "Division by zero: Attempted to divide " + to_string(lhs) +
-                   " by " + to_string(rhs);
-      exceptionStack.push(msg);
-      exceptionThrown = false;
-      throw CustomException(msg); */
+      /*       string msg = "Division by zero: Attempted to divide " +
+         to_string(lhs) + " by " + to_string(rhs); exceptionStack.push(msg);
+            exceptionThrown = false;
+            throw CustomException(msg); */
     }
     return lhs / rhs;
   default:
@@ -44,9 +43,21 @@ double performBinaryOperation(double lhs, double rhs, int op) {
   }
 }
 
-void print(const char *format, const char *value) { printf(format, value); }
+void print(const char *format, const char *value, bool isStderr = false) {
+  if (isStderr) {
+    fprintf(stderr, format, value);
+  } else {
+    printf(format, value);
+  }
+}
 
-void print(const char *format, double value) { printf(format, value); }
+void print(const char *format, double value, bool isStderr = false) {
+  if (isStderr) {
+    fprintf(stderr, format, value);
+  } else {
+    printf(format, value);
+  }
+}
 
 void setValueInSymbolTable(const char *id, double value) {
   string name(id);

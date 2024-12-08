@@ -81,7 +81,7 @@ prints:	tok_prints '(' tok_string_literal ')' ';'   {debugBison(6); print("%s\n"
 printd:	tok_printd '(' term ')' ';'		{debugBison(7); print("%lf\n", $3); }
     ;
 
-printe:    tok_printe '(' tok_string_literal ')' ';'   {debugBison(8); if (exceptionThrown){ print("%s\n", $3); exceptionThrown = false;}} 
+printe:    tok_printe '(' tok_string_literal ')' ';'   {debugBison(8); if (exceptionThrown){ print("%s\n", $3,true); exceptionThrown = false;}} 
     ;
 
 term:	tok_identifier				{debugBison(8); $$ = getValueFromSymbolTable($1); } 
