@@ -1,9 +1,10 @@
 try {
 printd(10);
-a = 10;
-b = 0;
-
+a = 7;
+b = 9;
+printd(b);
 }
 catch (division_by_zero) {   
     printe("Division by zero");
 }
+

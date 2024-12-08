@@ -32,7 +32,7 @@ $(LEX_C): $(LEXER)
 
 # Compile the SSC compiler
 $(EXECUTABLE): $(LEX_C) $(PARSER_C)
-	$(CXX) -o $(EXECUTABLE) $(PARSER_C) $(LEX_C) 
+	$(CXX) -o $(EXECUTABLE) $(PARSER_C) $(LEX_C) $(DEBUG)
 
 # Run the SSC compiler with the sample input file
 run: $(EXECUTABLE)

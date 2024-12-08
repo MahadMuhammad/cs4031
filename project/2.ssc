@@ -1,0 +1,24 @@
+b = 1;
+a = 0;
+if (b) {
+    a = 0;
+printd(b);
+
+}
+else {
+    printd(b);
+   a = 10;
+printd(a);
+
+}
+printd(a);
+
+a = 0;
+while (a < 10) {
+    printd(a);
+    b = a + 1;
+    a = b;
+    printd(a);
+}
+
+

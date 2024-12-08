@@ -26,6 +26,7 @@
 "if"                    {debugFlex(tok_if); return tok_if;}
 "else"                  {debugFlex(tok_else); return tok_else;}
 "while"                 {debugFlex(tok_while); return tok_while;}
+"division_by_zero"  {debugFlex(tok_division_by_zero); return tok_division_by_zero;}
 "=="                    {debugFlex(tok_eq); return tok_eq;}
 "!="                    {debugFlex(tok_neq); return tok_neq;}
 "<"                     {debugFlex(tok_lt); return tok_lt;}
